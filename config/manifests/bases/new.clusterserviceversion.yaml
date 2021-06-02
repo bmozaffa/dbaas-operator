@@ -1,0 +1,53 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+  name: new.v0.0.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: DBaaSConnection is the Schema for the dbaasconnections API
+      displayName: DBaa SConnection
+      kind: DBaaSConnection
+      name: dbaasconnections.dbaas.redhat.com
+      version: v1alpha1
+    - description: DBaaSInventory is the Schema for the dbaasinventories API
+      displayName: DBaa SInventory
+      kind: DBaaSInventory
+      name: dbaasinventories.dbaas.redhat.com
+      version: v1alpha1
+  description: Import provider cloud instances for easy coupling with developer applications.
+  displayName: Database-as-a-Service Operator
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments: null
+    strategy: ""
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - dbaas
+  links:
+  - name: New
+    url: https://new.domain
+  maintainers:
+  - email: jary@redhat.com
+    name: Jeremy Ary
+  maturity: alpha
+  provider:
+    name: Red Hat
+    url: https://www.redhat.com
+  version: 0.0.0
