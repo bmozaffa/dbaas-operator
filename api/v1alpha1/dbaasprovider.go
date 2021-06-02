@@ -20,12 +20,9 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// DBaaSProviderSpec defines a database provider for DBaaS operator
-type DBaaSProviderSpec struct {
+// DBaaSProvider defines a database provider for DBaaS operator
+type DBaaSProvider struct {
 	// Important: Run "make" to regenerate code after modifying this file
-
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
 
 	// Provider is the name of the database provider
 	Provider DatabaseProvider `json:"provider"`
@@ -47,20 +44,6 @@ type DatabaseProvider struct {
 type AuthenticationField struct {
 	Name   string `json:"name"`
 	Masked bool   `json:"masked"`
-}
-
-// DBaaSProviderStatus defines the observed state of DBaaSProvider
-type DBaaSProviderStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-}
-
-// DBaaSProvider is the Schema for the dbaasproviders API
-type DBaaSProvider struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DBaaSProviderSpec   `json:"spec,omitempty"`
-	Status            DBaaSProviderStatus `json:"status,omitempty"`
 }
 
 // DBaaSProviderList contains a list of DBaaSProvider
