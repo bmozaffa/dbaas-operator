@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1
+package v1alpha1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -23,7 +23,7 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// DBaaSProviderRegistration defines a database provider for DBaaS operator
+// DBaaSProviderRegistrationSpec defines a database provider for DBaaS operator
 type DBaaSProviderRegistrationSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
@@ -43,6 +43,12 @@ type DBaaSProviderRegistrationSpec struct {
 	ConnectionKind string `json:"connectionKind"`
 }
 
+// DBaaSProviderRegistrationStatus defines the observed state of DBaaSProviderRegistration
+type DBaaSProviderRegistrationStatus struct {
+	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
+	// Important: Run "make" to regenerate code after modifying this file
+}
+
 type DatabaseProvider struct {
 	Name string `json:"name"`
 }
@@ -51,9 +57,10 @@ type DatabaseProvider struct {
 
 // DBaaSProviderRegistrationList contains a list of DBaaSProviderRegistrations
 type DBaaSProviderRegistration struct {
-	metav1.TypeMeta `json:",inline"`
-	metav1.ListMeta `json:"metadata,omitempty"`
-	Spec            DBaaSProviderRegistrationSpec `json:"spec,omitempty"`
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+	Spec              DBaaSProviderRegistrationSpec   `json:"spec,omitempty"`
+	Status            DBaaSProviderRegistrationStatus `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true

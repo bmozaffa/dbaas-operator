@@ -1,0 +1,20 @@
+# permissions for end users to view dbaasproviderregistrations.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dbaasproviderregistration-viewer-role
+rules:
+- apiGroups:
+  - dbaas.redhat.com
+  resources:
+  - dbaasproviderregistrations
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - dbaas.redhat.com
+  resources:
+  - dbaasproviderregistrations/status
+  verbs:
+  - get

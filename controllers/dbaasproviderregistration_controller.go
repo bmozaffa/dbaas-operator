@@ -24,29 +24,29 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	v1alpha1 "github.com/RHEcosystemAppEng/dbaas-operator/api/v1alpha1"
+	dbaasv1alpha1 "github.com/RHEcosystemAppEng/dbaas-operator/api/v1alpha1"
 )
 
-// DBaaSConnectionReconciler reconciles a DBaaSConnection object
-type DBaaSConnectionReconciler struct {
+// DBaaSProviderRegistrationReconciler reconciles a DBaaSProviderRegistration object
+type DBaaSProviderRegistrationReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=dbaasconnections,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=dbaasconnections/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=dbaasconnections/finalizers,verbs=update
+//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=dbaasproviderregistrations,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=dbaasproviderregistrations/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=dbaasproviderregistrations/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
 // TODO(user): Modify the Reconcile function to compare the state specified by
-// the DBaaSConnection object against the actual cluster state, and then
+// the DBaaSProviderRegistration object against the actual cluster state, and then
 // perform operations to make the cluster state reflect the state specified by
 // the user.
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.8.3/pkg/reconcile
-func (r *DBaaSConnectionReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *DBaaSProviderRegistrationReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
 	// your logic here
@@ -55,8 +55,8 @@ func (r *DBaaSConnectionReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 }
 
 // SetupWithManager sets up the controller with the Manager.
-func (r *DBaaSConnectionReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *DBaaSProviderRegistrationReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&v1alpha1.DBaaSConnection{}).
+		For(&dbaasv1alpha1.DBaaSProviderRegistration{}).
 		Complete(r)
 }
