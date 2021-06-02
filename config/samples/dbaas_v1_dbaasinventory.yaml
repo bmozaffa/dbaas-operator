@@ -1,7 +1,0 @@
-apiVersion: dbaas.redhat.com/v1
-kind: DBaaSInventory
-metadata:
-  name: dbaasinventory-sample
-spec:
-  # Add fields here
-  foo: bar
