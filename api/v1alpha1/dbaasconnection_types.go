@@ -14,10 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1
+package v1alpha1
 
 import (
-	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -26,28 +25,17 @@ import (
 
 // DBaaSConnectionSpec defines the desired state of DBaaSConnection
 type DBaaSConnectionSpec struct {
+	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// A reference to the relevant DBaaSInventory CR
-	InventoryRef *corev1.LocalObjectReference `json:"inventory"`
-
-	// The ID of the instance to connect to, as seen in the Status of
-	// the referenced DBaaSInventory
-	InstanceID string `json:"instanceID"`
+	// Foo is an example field of DBaaSConnection. Edit dbaasconnection_types.go to remove/update
+	Foo string `json:"foo,omitempty"`
 }
 
 // DBaaSConnectionStatus defines the observed state of DBaaSConnection
 type DBaaSConnectionStatus struct {
-	Conditions []metav1.Condition `json:"conditions,omitempty"`
-
-	// The connection string for this instance
-	ConnectionString string `json:"connectionString,omitempty"`
-
-	// Secret holding username and password
-	CredentialsRef *corev1.LocalObjectReference `json:"credentialsRef"`
-
-	// Any other provider-specific information related to this connection
-	ConnectionInfo map[string]string `json:"connectionInfo,omitempty"`
+	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
+	// Important: Run "make" to regenerate code after modifying this file
 }
 
 //+kubebuilder:object:root=true

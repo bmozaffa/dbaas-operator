@@ -28,15 +28,15 @@ BUNDLE_METADATA_OPTS ?= $(BUNDLE_CHANNELS) $(BUNDLE_DEFAULT_CHANNEL)
 # This variable is used to construct full image tags for bundle and catalog images.
 #
 # For example, running 'make bundle-build bundle-push catalog-build catalog-push' will build and push both
-# redhat.com/dbaas-operator-bundle:$VERSION and redhat.com/dbaas-operator-catalog:$VERSION.
-IMAGE_TAG_BASE ?= quay.io/ecosystem-appeng/dbaas-operator
+# redhat.com/new-bundle:$VERSION and redhat.com/new-catalog:$VERSION.
+IMAGE_TAG_BASE ?= redhat.com/new
 
 # BUNDLE_IMG defines the image:tag used for the bundle.
 # You can use it as an arg. (E.g make bundle-build BUNDLE_IMG=<some-registry>/<project-name-bundle>:<tag>)
 BUNDLE_IMG ?= $(IMAGE_TAG_BASE)-bundle:v$(VERSION)
 
 # Image URL to use all building/pushing image targets
-IMG ?= $(IMAGE_TAG_BASE):latest
+IMG ?= controller:latest
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS ?= "crd:trivialVersions=true,preserveUnknownFields=false"
 
@@ -54,9 +54,6 @@ SHELL = /usr/bin/env bash -o pipefail
 .SHELLFLAGS = -ec
 
 all: build
-
-.PHONY: release
-release: build generate bundle docker-build docker-push bundle-build bundle-push catalog-build catalog-push
 
 ##@ General
 
@@ -123,37 +120,6 @@ deploy: manifests kustomize ## Deploy controller to the K8s cluster specified in
 undeploy: ## Undeploy controller from the K8s cluster specified in ~/.kube/config.
 	$(KUSTOMIZE) build config/default | kubectl delete -f -
 
-deploy-olm:
-	oc apply -f config/samples/catalog-operator-group.yaml
-	oc apply -f config/samples/catalog-subscription.yaml
-
-undeploy-olm:
-	-oc delete subscriptions.operators.coreos.com dbaas-operator
-	-oc delete operatorgroup dbaas-operator-group
-	-oc delete clusterserviceversion dbaas-operator.v${VERSION}
-
-catalog-update:
-	-oc delete catalogsource dbaas-operator -n openshift-marketplace
-	oc apply -f config/samples/catalog-source.yaml
-
-deploy-sample-app:
-	oc apply -f config/samples/quarkus-runner/deployment.yaml
-
-undeploy-sample-app:
-	-oc delete servicebindings.binding.operators.coreos.com dbaas-quarkus-sample-app-d-atlas-connection-dbsc
-	-oc delete deployment dbaas-quarkus-sample-app
-	-oc delete service dbaas-quarkus-sample-app
-	-oc delete route dbaas-quarkus-sample-app
-
-deploy-sample-binding:
-	oc apply -f config/samples/quarkus-runner/sample-binding.yaml
-
-undeploy-sample-binding:
-	oc delete servicebindings.binding.operators.coreos.com dbaas-quarkus-sample-app-d-atlas-connection-dbsc
-
-clean-namespace:
-	-oc delete dbaasconnections.dbaas.redhat.com --all
-	-oc delete dbaasservices.dbaas.redhat.com --all
 
 CONTROLLER_GEN = $(shell pwd)/bin/controller-gen
 controller-gen: ## Download controller-gen locally if necessary.

@@ -18,14 +18,13 @@ package controllers
 
 import (
 	"context"
-	v1 "github.com/RHEcosystemAppEng/dbaas-operator/api/v1"
-	"k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+
+	dbaasv1alpha1 "github.com/RHEcosystemAppEng/dbaas-operator/api/v1alpha1"
 )
 
 // DBaaSInventoryReconciler reconciles a DBaaSInventory object
@@ -34,54 +33,23 @@ type DBaaSInventoryReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=*,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=*/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=*/finalizers,verbs=update
+//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=dbaasinventories,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=dbaasinventories/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=dbaas.redhat.com,resources=dbaasinventories/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
+// TODO(user): Modify the Reconcile function to compare the state specified by
+// the DBaaSInventory object against the actual cluster state, and then
+// perform operations to make the cluster state reflect the state specified by
+// the user.
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.8.3/pkg/reconcile
 func (r *DBaaSInventoryReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	logger := log.FromContext(ctx, "dbaasservice", req.NamespacedName)
+	_ = log.FromContext(ctx)
 
-	var inventory v1.DBaaSInventory
-	if err := r.Get(ctx, req.NamespacedName, &inventory); err != nil {
-		if errors.IsNotFound(err) {
-			// CR deleted since request queued, child objects getting GC'd, no requeue
-			logger.Info("DBaaSInventory resource not found, has been deleted")
-			return ctrl.Result{}, nil
-		}
-		logger.Error(err, "Error fetching DBaaSInventory for reconcile")
-		return ctrl.Result{}, err
-	}
-
-	provider, err := r.getDBaaSProvider(inventory.Spec.Provider)
-	if err != nil {
-		if errors.IsNotFound(err) {
-			logger.Error(err, "Requested DBaaS Provider is not configured in this environment", "Provider", provider.Spec.Provider)
-			return ctrl.Result{}, err
-		}
-		logger.Error(err, "Error reading configured DBaaS providers")
-		return ctrl.Result{}, err
-	}
-
-	logger.Info("Found DBaaS provider", "provider", provider)
-	providerInventory := &unstructured.Unstructured{}
-	providerInventory.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   inventory.GroupVersionKind().Group,
-		Version: inventory.GroupVersionKind().Version,
-		Kind:    provider.Spec.InventoryKind,
-	})
-	providerInventory.SetNamespace(inventory.GetNamespace())
-	providerInventory.SetName(inventory.GetName())
-	providerInventory.UnstructuredContent()["spec"] = inventory.Spec.DeepCopy()
-	logger.Info("Inventory resource created as ", "providerInventory", providerInventory)
-	if err = r.Create(ctx, providerInventory); err != nil {
-		logger.Error(err, "Error creating a provider inventory", "providerInventory", providerInventory)
-		return ctrl.Result{}, err
-	}
+	// your logic here
 
 	return ctrl.Result{}, nil
 }
@@ -89,20 +57,6 @@ func (r *DBaaSInventoryReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 // SetupWithManager sets up the controller with the Manager.
 func (r *DBaaSInventoryReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&v1.DBaaSInventory{}).
+		For(&dbaasv1alpha1.DBaaSInventory{}).
 		Complete(r)
-}
-
-func (r *DBaaSInventoryReconciler) getDBaaSProvider(requestedProvider v1.DatabaseProvider) (v1.DBaaSProviderRegistration, error) {
-	providers := r.getDBaaSProviders(r.Client, r.Scheme)
-	for _, provider := range providers.Items {
-		if provider.Spec.Provider == requestedProvider {
-			return provider, nil
-		}
-	}
-	notFound := v1.DBaaSProviderRegistration{}
-	return notFound, errors.NewNotFound(schema.GroupResource{
-		Group:    notFound.GroupVersionKind().Group,
-		Resource: notFound.GroupVersionKind().Kind,
-	}, requestedProvider.Name)
 }

@@ -14,4 +14,4 @@ data:
       resourceName: e4addb06.redhat.com
 kind: ConfigMap
 metadata:
-  name: dbaas-operator-manager-config
+  name: new-manager-config
