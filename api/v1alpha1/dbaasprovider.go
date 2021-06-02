@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -91,4 +92,30 @@ type NamespacedName struct {
 
 	// The name for object of known type
 	Name string `json:"name,omitempty"`
+}
+
+// DBaaSConnectionSpec defines the desired state of DBaaSConnection
+type DBaaSConnectionSpec struct {
+	// Important: Run "make" to regenerate code after modifying this file
+
+	// A reference to the relevant DBaaSInventory CR
+	InventoryRef *corev1.LocalObjectReference `json:"inventory"`
+
+	// The ID of the instance to connect to, as seen in the Status of
+	// the referenced DBaaSInventory
+	InstanceID string `json:"instanceID"`
+}
+
+// DBaaSConnectionStatus defines the observed state of DBaaSConnection
+type DBaaSConnectionStatus struct {
+	Conditions []metav1.Condition `json:"conditions,omitempty"`
+
+	// The connection string for this instance
+	ConnectionString string `json:"connectionString,omitempty"`
+
+	// Secret holding username and password
+	CredentialsRef *corev1.LocalObjectReference `json:"credentialsRef"`
+
+	// Any other provider-specific information related to this connection
+	ConnectionInfo map[string]string `json:"connectionInfo,omitempty"`
 }
