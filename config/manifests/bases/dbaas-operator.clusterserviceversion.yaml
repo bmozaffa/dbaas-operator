@@ -23,10 +23,10 @@ spec:
       kind: DBaaSInventory
       name: dbaasinventories.dbaas.redhat.com
       version: v1alpha1
-    - description: DBaaSProviderRegistrationList contains a list of DBaaSProviderRegistrations
-      displayName: DBaaS Provider Registration
-      kind: DBaaSProviderRegistration
-      name: dbaasproviderregistrations.dbaas.redhat.com
+    - description: DBaaSProvider is the Schema for the dbaasproviders API
+      displayName: DBaaS Provider
+      kind: DBaaSProvider
+      name: dbaasproviders.dbaas.redhat.com
       version: v1alpha1
   description: Import provider cloud instances for easy coupling with developer applications.
   displayName: Database-as-a-Service Operator

@@ -7,20 +7,30 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func (r *DBaaSInventoryReconciler) getDBaaSProviders(client client.Client, scheme *runtime.Scheme) v1alpha1.DBaaSProviderRegistrationList {
-	return v1alpha1.DBaaSProviderRegistrationList{
-		Items: []v1alpha1.DBaaSProviderRegistration{
+func (r *DBaaSInventoryReconciler) getDBaaSProviders(client client.Client, scheme *runtime.Scheme) v1alpha1.DBaaSProviderList {
+	return v1alpha1.DBaaSProviderList{
+		Items: []v1alpha1.DBaaSProvider{
 			{
 				TypeMeta: metav1.TypeMeta{},
-				Spec: v1alpha1.DBaaSProviderRegistrationSpec{
+				Spec: v1alpha1.DBaaSProviderSpec{
 					TypeMeta: metav1.TypeMeta{},
 					ListMeta: metav1.ListMeta{},
 					Provider: v1alpha1.DatabaseProvider{
 						Name: "MongoDB Atlas",
 					},
-					InventoryKind:        "AtlasAccount",
-					AuthenticationFields: []string{"Organization ID", "Organization Public Key", "Organization Private Key"},
-					ConnectionKind:       "AtlasConnection",
+					InventoryKind: "AtlasAccount",
+					AuthenticationFields: []v1alpha1.AuthenticationField{
+						{
+							Name: "Organization ID",
+						},
+						{
+							Name: "Organization Public Key",
+						},
+						{
+							Name: "Organization Private Key",
+						},
+					},
+					ConnectionKind: "AtlasConnection",
 				},
 			},
 		},

@@ -32,7 +32,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: DBaaSInventorySpec defines the desired state of DBaaSInventory
+            description: DBaaSOperatorInventorySpec defines the desired state of DBaaSInventory
             properties:
               credentialsRef:
                 description: The secret storing the vendor-specific connection credentials

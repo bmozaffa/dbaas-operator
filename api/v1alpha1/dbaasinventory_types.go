@@ -27,7 +27,7 @@ type DBaaSOperatorInventorySpec struct {
 	// Provider is the name of the database provider that we wish to connect with
 	Provider DatabaseProvider `json:"provider"`
 
-	DBaaSInventorySpec
+	DBaaSInventorySpec `json:",inline"`
 }
 
 //+kubebuilder:object:root=true

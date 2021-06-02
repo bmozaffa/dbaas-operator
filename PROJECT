@@ -28,10 +28,9 @@ resources:
 - api:
     crdVersion: v1
     namespaced: true
-  controller: true
   domain: redhat.com
   group: dbaas
-  kind: DBaaSProviderRegistration
+  kind: DBaaSProvider
   path: github.com/RHEcosystemAppEng/dbaas-operator/api/v1alpha1
   version: v1alpha1
 version: "3"

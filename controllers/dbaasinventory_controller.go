@@ -93,14 +93,14 @@ func (r *DBaaSInventoryReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Complete(r)
 }
 
-func (r *DBaaSInventoryReconciler) getDBaaSProvider(requestedProvider v1alpha1.DatabaseProvider) (v1alpha1.DBaaSProviderRegistration, error) {
+func (r *DBaaSInventoryReconciler) getDBaaSProvider(requestedProvider v1alpha1.DatabaseProvider) (v1alpha1.DBaaSProvider, error) {
 	providers := r.getDBaaSProviders(r.Client, r.Scheme)
 	for _, provider := range providers.Items {
 		if provider.Spec.Provider == requestedProvider {
 			return provider, nil
 		}
 	}
-	notFound := v1alpha1.DBaaSProviderRegistration{}
+	notFound := v1alpha1.DBaaSProvider{}
 	return notFound, errors.NewNotFound(schema.GroupResource{
 		Group:    notFound.GroupVersionKind().Group,
 		Resource: notFound.GroupVersionKind().Kind,

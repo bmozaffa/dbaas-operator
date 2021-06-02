@@ -2,5 +2,4 @@
 resources:
 - dbaas_v1alpha1_dbaasconnection.yaml
 - dbaas_v1alpha1_dbaasinventory.yaml
-- dbaas_v1alpha1_dbaasproviderregistration.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

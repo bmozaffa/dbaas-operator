@@ -1,9 +1,27 @@
+/*
+Copyright 2021.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package v1alpha1
 
-import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
 
-// DBaaSProviderRegistrationSpec defines a database provider for DBaaS operator
-type DBaaSProviderRegistrationSpec struct {
+// DBaaSProviderSpec defines a database provider for DBaaS operator
+type DBaaSProviderSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	metav1.TypeMeta `json:",inline"`
@@ -27,15 +45,29 @@ type DatabaseProvider struct {
 }
 
 type AuthenticationField struct {
-	Name string `json:"name"`
-	Masked bool `json:"masked"`
+	Name   string `json:"name"`
+	Masked bool   `json:"masked"`
 }
 
-// DBaaSProviderRegistrationList contains a list of DBaaSProviderRegistrations
-type DBaaSProviderRegistration struct {
+// DBaaSProviderStatus defines the observed state of DBaaSProvider
+type DBaaSProviderStatus struct {
+	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
+	// Important: Run "make" to regenerate code after modifying this file
+}
+
+// DBaaSProvider is the Schema for the dbaasproviders API
+type DBaaSProvider struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DBaaSProviderRegistrationSpec   `json:"spec,omitempty"`
+	Spec              DBaaSProviderSpec   `json:"spec,omitempty"`
+	Status            DBaaSProviderStatus `json:"status,omitempty"`
+}
+
+// DBaaSProviderList contains a list of DBaaSProvider
+type DBaaSProviderList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DBaaSProvider `json:"items"`
 }
 
 // DBaaSInventorySpec defines the desired state of DBaaSInventory

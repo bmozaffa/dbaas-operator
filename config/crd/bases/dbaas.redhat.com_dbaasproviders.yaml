@@ -6,20 +6,20 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: dbaasproviderregistrations.dbaas.redhat.com
+  name: dbaasproviders.dbaas.redhat.com
 spec:
   group: dbaas.redhat.com
   names:
-    kind: DBaaSProviderRegistration
-    listKind: DBaaSProviderRegistrationList
-    plural: dbaasproviderregistrations
-    singular: dbaasproviderregistration
+    kind: DBaaSProvider
+    listKind: DBaaSProviderList
+    plural: dbaasproviders
+    singular: dbaasprovider
   scope: Namespaced
   versions:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: DBaaSProviderRegistrationList contains a list of DBaaSProviderRegistrations
+        description: DBaaSProvider is the Schema for the dbaasproviders API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -34,8 +34,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: DBaaSProviderRegistrationSpec defines a database provider
-              for DBaaS operator
+            description: DBaaSProviderSpec defines a database provider for DBaaS operator
             properties:
               apiVersion:
                 description: 'APIVersion defines the versioned schema of this representation
@@ -43,9 +42,18 @@ spec:
                   internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
                 type: string
               authenticationFields:
-                description: The name of the inventory CRD defined by the provider
+                description: The authentication fields the user needs to receive and
+                  provide
                 items:
-                  type: string
+                  properties:
+                    masked:
+                      type: boolean
+                    name:
+                      type: string
+                  required:
+                  - masked
+                  - name
+                  type: object
                 type: array
               connectionKind:
                 description: The name of the connection CRD defined by the provider
@@ -120,8 +128,7 @@ spec:
             - provider
             type: object
           status:
-            description: DBaaSProviderRegistrationStatus defines the observed state
-              of DBaaSProviderRegistration
+            description: DBaaSProviderStatus defines the observed state of DBaaSProvider
             type: object
         type: object
     served: true
