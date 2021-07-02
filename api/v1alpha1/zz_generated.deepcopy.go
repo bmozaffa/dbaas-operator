@@ -135,6 +135,11 @@ func (in *DBaaSConnectionStatus) DeepCopyInto(out *DBaaSConnectionStatus) {
 		*out = new(corev1.LocalObjectReference)
 		**out = **in
 	}
+	if in.ConfigMapRef != nil {
+		in, out := &in.ConfigMapRef, &out.ConfigMapRef
+		*out = new(corev1.LocalObjectReference)
+		**out = **in
+	}
 	if in.ConnectionInfo != nil {
 		in, out := &in.ConnectionInfo, &out.ConnectionInfo
 		*out = make(map[string]string, len(*in))

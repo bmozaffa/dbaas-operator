@@ -124,17 +124,24 @@ spec:
                   - type
                   type: object
                 type: array
+              configMapRef:
+                description: ConfigMap containing all other binding parameters required
+                  to establish a connection
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
               connectionInfo:
                 additionalProperties:
                   type: string
                 description: Any other provider-specific information related to this
                   connection
                 type: object
-              connectionString:
-                description: The connection string for this instance
-                type: string
               credentialsRef:
-                description: Secret holding username and password
+                description: Secret holding username, password, and/or other sensitive
+                  connection info
                 properties:
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names

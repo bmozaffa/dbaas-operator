@@ -110,11 +110,11 @@ type DBaaSConnectionSpec struct {
 type DBaaSConnectionStatus struct {
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 
-	// The connection string for this instance
-	ConnectionString string `json:"connectionString,omitempty"`
-
-	// Secret holding username and password
+	// Secret holding username, password, and/or other sensitive connection info
 	CredentialsRef *corev1.LocalObjectReference `json:"credentialsRef,omitempty"`
+
+	// ConfigMap containing all other binding parameters required to establish a connection
+	ConfigMapRef *corev1.LocalObjectReference `json:"configMapRef,omitempty"`
 
 	// Any other provider-specific information related to this connection
 	ConnectionInfo map[string]string `json:"connectionInfo,omitempty"`
